@@ -1,0 +1,71 @@
+.board {
+  border-radius: 8px;
+  display: grid;
+  grid-template-columns: repeat(3, 100px);
+  max-width: 301px;
+}
+.board.disabled {
+  pointer-events: none;
+}
+.cell {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.christ {
+  position: relative;
+  width: 90px;
+  height: 90px;
+}
+.christ:before {
+  content: '';
+  position: absolute;
+  left: 38px;
+  top: -10px;
+  width: 16px;
+  height: 112px;
+  background-color: cadetblue;
+  transform: rotate(45deg);
+}
+.christ:after {
+  content: '';
+  position: absolute;
+  left: 38px;
+  top: -10px;
+  width: 16px;
+  height: 112px;
+  background-color: cadetblue;
+  transform: rotate(-45deg);
+}
+
+.zero {
+  position: relative;
+  width: 90px;
+  height: 90px;
+  background-color: bisque;
+  border-radius: 50%;
+}
+.zero:after {
+  content: '';
+  width: 60px;
+  height: 60px;
+  display: flex;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  background-color: #fff;
+  border-radius: 50%;
+}
+
+label:hover {
+  cursor: pointer;
+}
