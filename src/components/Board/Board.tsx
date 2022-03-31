@@ -2,7 +2,13 @@ import { useCallback, useEffect } from 'react';
 import { Cell } from '../Cell/Cell';
 import { useState } from 'react';
 import { ICell } from '../interfaces';
-import { checkWin } from '../rules';
+import {
+  checkWin,
+  getPlayerCellsArr,
+  getTargetCellsIds,
+  isFullCell,
+  winCombination,
+} from '../rules';
 import { changeBoard } from './helper';
 import { getCellId } from '../Cell/helper';
 import {
@@ -13,7 +19,7 @@ import {
 
 export interface BoardProps {
   switchCurrentMove: () => void;
-  curentPlayer: null | string;
+  curentPlayer: string;
   setCurrentPlayer: (str: string) => void;
   setStartGame: (n: boolean) => void;
   startGame: boolean;
@@ -81,13 +87,25 @@ export const Board: React.FC<BoardProps> = ({
 
   const computerMove = useCallback(
     (board: any) => {
+      let cellId;
       const availableCell = getAvailableCellsArray(board);
-      //Choose random cellId from availables cells
-      const randomIndex = Math.floor(Math.random() * availableCell.length);
-      const cellId = availableCell[randomIndex];
+      const PlayerFullCellsArr = getPlayerCellsArr(board, curentPlayer);
+      const targetCellsIds = getTargetCellsIds(
+        winCombination,
+        PlayerFullCellsArr
+      );
+      const filterTargeCellIdsrArr = targetCellsIds.filter((cell: any) =>
+        isFullCell([...board], cell)
+      );
+      if (filterTargeCellIdsrArr.length >= 1) {
+        cellId = filterTargeCellIdsrArr[0];
+      } else {
+        const randomIndex = Math.floor(Math.random() * availableCell.length);
+        cellId = availableCell[randomIndex];
+      }
       setComputerMove(cellId);
     },
-    [setComputerMove, game.board]
+    [setComputerMove]
   );
   useEffect(() => {
     let timer: ReturnType<typeof setTimeout>;

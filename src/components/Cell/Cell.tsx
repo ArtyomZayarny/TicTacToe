@@ -6,7 +6,7 @@ export interface CellProps {
 
 export const Cell: React.FC<CellProps> = ({ state, id, setMove }) => {
   return (
-    <div id={id} className="cell" onClick={setMove}>
+    <div id={id} className={`cell cell-${state}`} onClick={setMove}>
       <div className={`${state}`}></div>
     </div>
   );

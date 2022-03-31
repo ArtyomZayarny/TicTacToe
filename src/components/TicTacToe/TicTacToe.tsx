@@ -3,7 +3,7 @@ import { Board } from '../Board/Board';
 import { ChoosePlayer } from '../ChoosePlayer/ChoosePlayer';
 
 export const TicTacToe = () => {
-  const [curentPlayer, setCurrentPlayer] = useState<any>(null);
+  const [curentPlayer, setCurrentPlayer] = useState('');
   const [startGame, setStartGame] = useState(false);
   const [userPlay, setUserPlay] = useState('');
   const switchCurrentMove = () => {
