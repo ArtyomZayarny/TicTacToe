@@ -51,14 +51,14 @@ export const opositPlayer = (name: string) =>
 
 export const getPlayerCellsArr = (board: any, curentPlayer: any) => {
   return board.reduce((a: any, v: ICell) => {
-    if (v.status === opositPlayer(curentPlayer)) {
+    if (v.status === curentPlayer) {
       a.push(v.id);
     }
     return a;
   }, []);
 };
 
-export const isFullCell = (board: any, cellId: number) => {
+export const isEmptyCell = (board: any, cellId: number) => {
   return board.find((cell: any) => cell.id === cellId && !cell.status);
 };
 export const getTargetCellsIds = (WinComArr: any, playerBoard: any) => {

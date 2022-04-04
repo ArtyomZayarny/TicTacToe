@@ -6,7 +6,8 @@ import {
   checkWin,
   getPlayerCellsArr,
   getTargetCellsIds,
-  isFullCell,
+  isEmptyCell,
+  opositPlayer,
   winCombination,
 } from '../rules';
 import { changeBoard } from './helper';
@@ -85,23 +86,56 @@ export const Board: React.FC<BoardProps> = ({
     [game.board, curentPlayer]
   );
 
+  const getDangerCellForComputer = (board: any, curentPlayer: any) => {
+    //Check danger zone (prevent to win)
+    const PlayerFullCellsArr = getPlayerCellsArr(
+      board,
+      opositPlayer(curentPlayer)
+    );
+    const targetCellsIds = getTargetCellsIds(
+      winCombination,
+      PlayerFullCellsArr
+    );
+    //Find empty cell id
+    const filterTargetCellIdsrArr = targetCellsIds.filter((cell: any) =>
+      isEmptyCell([...board], cell)
+    );
+    return filterTargetCellIdsrArr.length >= 1 && filterTargetCellIdsrArr[0];
+  };
   const computerMove = useCallback(
     (board: any) => {
       let cellId;
       const availableCell = getAvailableCellsArray(board);
-      const PlayerFullCellsArr = getPlayerCellsArr(board, curentPlayer);
+      //Anylize current board
+      //TODO : check is possible Win combination for computer func possibleWin
+      const computerFullCellsArr = getPlayerCellsArr(board, curentPlayer);
       const targetCellsIds = getTargetCellsIds(
         winCombination,
-        PlayerFullCellsArr
+        computerFullCellsArr
       );
-      const filterTargeCellIdsrArr = targetCellsIds.filter((cell: any) =>
-        isFullCell([...board], cell)
+      const filterTargetCellIdsrArr = targetCellsIds.filter((cell: any) =>
+        isEmptyCell([...board], cell)
       );
-      if (filterTargeCellIdsrArr.length >= 1) {
-        cellId = filterTargeCellIdsrArr[0];
+      //Winner cell
+      const cellToWin =
+        filterTargetCellIdsrArr.length >= 1 && filterTargetCellIdsrArr[0];
+
+      //Check danger zone form computer (prevent player to wein)
+      const dangerCellForComputer = getDangerCellForComputer(
+        [...board],
+        curentPlayer
+      );
+
+      if (cellToWin) {
+        cellId = cellToWin;
       } else {
-        const randomIndex = Math.floor(Math.random() * availableCell.length);
-        cellId = availableCell[randomIndex];
+        if (dangerCellForComputer) {
+          cellId = dangerCellForComputer;
+        }
+        if (!cellId && !dangerCellForComputer) {
+          const randomIndex = Math.floor(Math.random() * availableCell.length);
+          cellId = availableCell[randomIndex];
+        }
       }
       setComputerMove(cellId);
     },
